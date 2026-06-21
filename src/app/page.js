@@ -1,3 +1,4 @@
+import CTASection from "@/components/CTASection";
 import HeroSection from "@/components/HeroSection";
 import WorksSection from "@/components/WorksSection";
 import Image from "next/image";
@@ -7,6 +8,7 @@ export default function Home() {
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
        <HeroSection></HeroSection>
         <WorksSection></WorksSection>
+        <CTASection></CTASection>
     </div>
   );
 }
