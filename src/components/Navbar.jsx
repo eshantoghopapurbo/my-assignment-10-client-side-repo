@@ -19,7 +19,8 @@ export default function NavbarPage() {
     ];
 
     return (
-        <nav className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-zinc-800 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-lg transition-colors duration-300">
+        <nav className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-zinc-800
+         bg-white/80  backdrop-blur-lg transition-colors duration-300">
             <header className="container mx-auto flex h-16 items-center justify-between px-6">
 
                 {/* বামপাশ: মোবাইল মেনু বাটন এবং লোগো */}

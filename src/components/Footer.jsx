@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="container mx-auto  text-white py-16 px-12">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-16">
         
-        {/* লোগো এবং ডেসক্রিপশন */}
+       
         <div className="space-y-6">
           <h2 className="font-extrabold text-2xl text-blue-600 dark:text-blue-500 tracking-tight">SkillSwap</h2>
           <p className="text-gray-500 leading-relaxed max-w-xs">
@@ -21,7 +21,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* প্ল্যাটফর্ম লিঙ্কস */}
         <div className="space-y-6">
           <h3 className="text-xs font-bold uppercase tracking-widest text-black">Platform</h3>
           <ul className="space-y-4 text-gray-500">
@@ -32,7 +31,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* সাপোর্ট লিঙ্কস */}
+       
         <div className="space-y-6">
           <h3 className="text-xs font-bold uppercase tracking-widest text-black">Support</h3>
           <ul className="space-y-4 text-gray-500">
@@ -44,7 +43,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ডিভাইডার এবং বটম বার */}
+     
       <div className="max-w-7xl mx-auto mt-16 border-t border-gray-500 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-gray-500">
         <p>© 2024 SkillSwap Marketplace. Built for the modern workforce.</p>
         
