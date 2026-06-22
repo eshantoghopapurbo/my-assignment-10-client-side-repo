@@ -102,13 +102,13 @@ export default function NavbarPage() {
                         })}
                         <li className="my-2 border-t  border-gray-100 dark:border-zinc-800" />
                         <li>
-                            <Link
+                            <link
                                 href="/login"
                                 className="block py-2 px-3 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 rounded-lg"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Log In
-                            </Link>
+                            </link>
                         </li>
                         <li>
                             <Link
