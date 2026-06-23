@@ -5,9 +5,15 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'i.ibb.co.com', // এখানে আপনার হোস্টনামটি দিন
+        hostname: 'i.ibb.co.com', 
         port: '',
-        pathname: '/**', // সব ধরনের পাথ এলাও করার জন্য
+        pathname: '/**', 
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.dicebear.com',
+        port: '',
+        pathname: '/**',
       },
     ],
   },

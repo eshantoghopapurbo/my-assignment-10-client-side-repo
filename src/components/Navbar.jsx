@@ -4,11 +4,31 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // ১. usePathname ইমপোর্ট করলেন
 import { Bars, Xmark } from "@gravity-ui/icons";
+import { authClient, useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 //  import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export default function NavbarPage() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const pathname = usePathname(); // ২. কারেন্ট পেজের পাথ নেওয়ার জন্য হুকটি কল করলেন
+    const pathname = usePathname();
+    const { data: session, isPending } = useSession();
+    console.log("session data in Navbar :", session, "is pending", isPending);
+    const user = session?.user;
+    const router = useRouter();
+
+
+    // const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const handleLogout = async () => {
+        await authClient.signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    router.push("/login"); // redirect to login page
+                },
+            },
+        });
+    };
 
     // এখন আর আলাদা করে isActive দেওয়ার দরকার নেই
     const menuItems = [
@@ -64,18 +84,62 @@ export default function NavbarPage() {
                 {/* ডানপাশ: থিম সুইচার, লগইন এবং জয়েন বাটন */}
                 <div className="flex items-center gap-4">
                     {/* <ThemeSwitcher /> */}
-                    <Link
-                        href="/login"
-                        className="hidden sm:inline-block text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-500 transition-colors"
-                    >
-                        Log In
-                    </Link>
-                    <Link
-                        href="/register"
-                        className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-full text-sm px-5 py-2 transition-all shadow-sm hover:shadow"
-                    >
-                        Join Now
-                    </Link>
+                    {
+                        user ?
+                            <>
+                                <div className="flex relative">
+
+                                    <div className="hidden md:block mt-3">
+                                        <Link href={user ? "/dashboard" : "/login"} className="px-5 py-2.5 font-medium transition-all active:scale-95 text-sm">
+                                            Dashboard
+                                        </Link>
+                                    </div>
+
+                                    <button
+                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                        className="flex items-center space-x-3 focus:outline-none bg-gray-50 hover:bg-gray-100 p-2 rounded-full md:rounded-lg transition-all duration-200"
+                                    >
+                                        <span className="hidden md:block text-sm font-medium text-gray-750">
+                                            {user.name}
+                                        </span>
+
+                                        <Image
+                                            width={100}
+                                            height={100}
+                                            className="h-9 w-9 rounded-full object-cover border-2 border-indigo-500"
+                                            src={user?.image || "https://i.ibb.co.com/W41N9qqG/da59647bd31dd524c09991cb89949804.jpg"}
+                                            alt={user.name}
+                                        />
+                                        <svg className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </button>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="w-full flex items-center text-s px-4 py-2.5 text-sm text-red-650 hover:bg-red-50 hover:text-red-600 transition-colors"
+                                    >
+                                        <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                        </svg>
+                                        Logout
+                                    </button>
+                                </div>
+                            </>
+                            :
+                            <>
+                                <Link
+                                    href="/login"
+                                    className="hidden sm:inline-block text-sm font-semibold text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-500 transition-colors"
+                                >
+                                    Log In
+                                </Link>
+                                <Link
+                                    href="/register"
+                                    className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-full text-sm px-5 py-2 transition-all shadow-sm hover:shadow"
+                                >
+                                    Join Now
+                                </Link>
+                            </>}
                 </div>
             </header>
 
@@ -100,15 +164,16 @@ export default function NavbarPage() {
                                 </li>
                             );
                         })}
+
                         <li className="my-2 border-t  border-gray-100 dark:border-zinc-800" />
                         <li>
-                            <link
+                            <Link
                                 href="/login"
                                 className="block py-2 px-3 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 rounded-lg"
                                 onClick={() => setIsMenuOpen(false)}
                             >
                                 Log In
-                            </link>
+                            </Link>
                         </li>
                         <li>
                             <Link
