@@ -7,30 +7,27 @@ console.log(process.env.MONGO_DB_URL);
 const db = client.db(process.env.AUTH_DB_NAME);
 
 export const auth = betterAuth({
-    emailAndPassword: { 
-    enabled: true, 
-  }, 
-  
+  emailAndPassword: {
+    enabled: true,
+  },
+
   database: mongodbAdapter(db, {
     // Optional: if you don't provide a client, database transactions won't be enabled.
     client
   }),
-  user:{
-    additionalFields:{
-      role:{
-        defaultValue:"client"
+  user: {
+    additionalFields: {
+      role: {
+        default: "client", // এটা ডিফল্ট হিসেবে থাকবে
       },
-      isBlocked:{
-        defaultValue: false
-      }
     }
   },
-   socialProviders: {
-        google: { 
-            clientId: process.env.GOOGLE_CLIENT_ID , 
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET , 
-        }, 
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
-  
-   
+  },
+
+
 });

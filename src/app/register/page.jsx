@@ -25,12 +25,13 @@ export default function Login() {
             provider: "google",
         });
     }
+
+    const [role ,setRole] =useState("client")
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         image: "",
         password: "",
-        role: "client",
     });
     const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -44,18 +45,19 @@ export default function Login() {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleRoleChange = (value) => {
-        setFormData((prev) => ({ ...prev, role: value }));
-    };
+    // const handleRoleChange = (value) => {
+    //     setFormData((prev) => ({ ...prev, role: value }));
+    // };
+    // console.log("formdata role", formData.role);
 
-    console.log("mongodb user ", process.env.MONGO_DB_URL);
+    // console.log("mongodb user ", process.env.MONGO_DB_URL);
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsLoading(true);
         setError("");
         setSuccess("");
 
-        if (!formData.name || !formData.email || !formData.password || !formData.image || !formData.role) {
+        if (!formData.name || !formData.email || !formData.password || !formData.image ) {
             setError("Please fill in all fields.");
             setIsLoading(false);
             return;
@@ -67,7 +69,7 @@ export default function Login() {
                 email: formData.email,
                 password: formData.password,
                 image: formData.image,
-                role: formData.role,
+                role,
                 callbackURL: "/",
             });
             console.log("user ", data);
@@ -78,7 +80,7 @@ export default function Login() {
             }
 
             setSuccess("Account created successfully!");
-            setFormData({ name: "", email: "", image: "", password: "", role: "" });
+            setFormData({ name: "", email: "", image: "", password: "", });
 
         } catch (err) {
             console.error("Signup Error:", err);
@@ -102,28 +104,22 @@ export default function Login() {
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
                     <div className="flex flex-col gap-4">
-                        <Label className="text-black font-semibold">Subscription plan</Label>
-
-                        <RadioGroup
-                            defaultValue="client"
-                            name="client"
-                            className="flex flex-row gap-10 "
-                            orientation="horizontal"
-                            onValueChange={handleRoleChange}
-                        >
-                            {/* Client Option */}
-                            <Radio value="client" className="flex items-center gap-2 cursor-pointer">
-                                <Radio.Control />
+                        <Label className="text-black">Subscription plan</Label>
+                        <RadioGroup defaultValue="client" name="role" orientation="horizontal" onChange={value => setRole(value)}>
+                            <Radio value="client">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
                                 <Radio.Content>
-                                    <Label className="text-black cursor-pointer">Client</Label>
+                                    <Label className="text-black">client</Label>
                                 </Radio.Content>
                             </Radio>
-
-                            {/* Freelancer Option */}
-                            <Radio value="freelancer" className="flex items-center gap-2 cursor-pointer">
-                                <Radio.Control />
+                            <Radio value="freelancer">
+                                <Radio.Control>
+                                    <Radio.Indicator />
+                                </Radio.Control>
                                 <Radio.Content>
-                                    <Label className="text-black cursor-pointer">Freelancer</Label>
+                                    <Label className="text-black" >freelancer</Label>
                                 </Radio.Content>
                             </Radio>
                         </RadioGroup>
@@ -139,7 +135,7 @@ export default function Login() {
                         Login with Google
                     </Button>
 
-                     {/* Divider */}
+                    {/* Divider */}
                     <div className="flex items-center my-2">
                         <hr className="flex-grow border-t border-gray-300" />
 

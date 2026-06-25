@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation"; // ১. usePathname ইমপোর্ট করলেন
-import { Bars, Xmark } from "@gravity-ui/icons";
+import { Bars, LayoutColumns, Xmark } from "@gravity-ui/icons";
 import { authClient, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -16,7 +16,6 @@ export default function NavbarPage() {
     console.log("session data in Navbar :", session, "is pending", isPending);
     const user = session?.user;
     const router = useRouter();
-
 
     // const [isOpen, setIsOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -89,9 +88,13 @@ export default function NavbarPage() {
                             <>
                                 <div className="flex relative">
 
-                                    <div className="hidden md:block mt-3">
-                                        <Link href={user ? "/dashboard" : "/login"} className="px-5 py-2.5 font-medium transition-all active:scale-95 text-sm">
-                                            Dashboard
+                                    <div className="hidden md:block mt-2">
+                                        <Link
+                                            href={user ? "/dashboard/client" : "/login"}
+                                            className="flex items-center gap-2 px-5 py-2.5 font-medium transition-all active:scale-95 text-sm"
+                                        >
+                                            <LayoutColumns size={18} />
+                                            <span>Dashboard</span>
                                         </Link>
                                     </div>
 
@@ -107,7 +110,7 @@ export default function NavbarPage() {
                                             width={100}
                                             height={100}
                                             className="h-9 w-9 rounded-full object-cover border-2 border-indigo-500"
-                                            src={user?.image || "https://i.ibb.co.com/W41N9qqG/da59647bd31dd524c09991cb89949804.jpg"}
+                                            src={user?.image }
                                             alt={user.name}
                                         />
                                         <svg className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -143,7 +146,7 @@ export default function NavbarPage() {
                 </div>
             </header>
 
-            {/* মোবাইল স্ক্রিনের জন্য ড্রপডাউন মেনু (এখানেও অ্যাক্টিভ স্টেট কাজ করবে) */}
+            {/* মোবাইল স্ক্রিনের জন্য ড্রপডাউন মেনু */}
             {isMenuOpen && (
                 <div className="border-t border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-950 sm:hidden transition-all">
                     <ul className="flex flex-col gap-1 p-4">
@@ -165,24 +168,44 @@ export default function NavbarPage() {
                             );
                         })}
 
-                        <li className="my-2 border-t  border-gray-100 dark:border-zinc-800" />
-                        <li>
-                            <Link
-                                href="/login"
-                                className="block py-2 px-3 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 rounded-lg"
-                                onClick={() => setIsMenuOpen(false)}
-                            >
-                                Log In
-                            </Link>
-                        </li>
-                        <li>
-                            <Link
-                                href="/register"
-                                className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-full text-sm px-5 py-2 transition-all shadow-sm hover:shadow"
-                            >
-                                Join Now
-                            </Link>
-                        </li>
+                        <li className="my-2 border-t border-gray-100 dark:border-zinc-800" />
+
+                        {/* এখানে কন্ডিশন চেক করছি: ইউজার লগইন থাকলে ড্যাশবোর্ড দেখাবে, না থাকলে লগইন/রেজিস্টার */}
+                        {user ? (
+                            <li>
+                                <Link
+                                    href="/dashboard"
+                                    className={`block py-2 px-3 text-base rounded-lg transition-colors ${pathname === "/dashboard"
+                                        ? "flex items-center gap-2 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-500 font-semibold"
+                                        : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900"
+                                        }`}
+                                    onClick={() => setIsMenuOpen(false)}
+                                >
+                                    <LayoutColumns size={18} />  Dashboard
+                                </Link>
+                            </li>
+                        ) : (
+                            <>
+                                <li>
+                                    <Link
+                                        href="/login"
+                                        className="block py-2 px-3 text-base text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900 rounded-lg"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Log In
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        href="/register"
+                                        className="inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-full text-sm px-5 py-2 transition-all shadow-sm hover:shadow"
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        Join Now
+                                    </Link>
+                                </li>
+                            </>
+                        )}
                     </ul>
                 </div>
             )}
