@@ -29,24 +29,23 @@ export const createTask = async (newTaskData) => {
 
 // lib/api/tasks.js
 export const getTaskDetails = async (id) => {
-  // id না থাকলে আগেই রিটার্ন করে দিন
   if (!id) throw new Error("Task ID is missing");
-  // এখানে baseUrl ভেরিয়েবলটি ব্যবহার করুন
-  const res = await fetch(`${baseUrl}/api/tasks/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    cache: 'no-store',
-  });
+
+  const res = await fetch(
+    `${baseUrl}/mytasks/${id}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    }
+  );
+
   // if (!res.ok) {
-  //   // এরর হ্যান্ডলিং আরও স্পষ্ট করার জন্য
-  //   const errorData = await res.json().catch(() => ({}));
-  //   console.error("API Response Error:", errorData);
-  //   throw new Error(`Failed to fetch task details: ${res.status}`);
+  //   throw new Error("Failed to fetch task details");
   // }
+
   return res.json();
 };
+
 
 // export const getProposalDetails = async (proposalId) => {
 //   const res = await fetch(`${baseUrl}/api/proposals/details/${proposalId}`, { cache: 'no-store' });
@@ -84,10 +83,10 @@ export const getallTasks = async () => {
   return res.json();
 };
  
-// GET PROPOSALD
-export const getProposalDetails = async (proposalId) => {
-  const res = await fetch(`${baseUrl}/api/proposals/details/${proposalId}`, { cache: 'no-store' });
-  return res.json();
-};
+// // GET PROPOSALD
+// export const getProposalDetails = async (proposalId) => {
+//   const res = await fetch(`${baseUrl}/api/proposals/details/${proposalId}`, { cache: 'no-store' });
+//   return res.json();
+// };
 
           

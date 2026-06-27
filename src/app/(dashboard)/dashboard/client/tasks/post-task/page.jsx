@@ -111,7 +111,7 @@ import toast from "react-hot-toast";
 
 const TaskPostingPage = () => {
   const { data: session } = authClient.useSession();
-     console.log("session",session);
+  console.log("session", session);
   const router = useRouter();
 
   const tomorrow = new Date();
@@ -147,18 +147,21 @@ const TaskPostingPage = () => {
       createdAt: new Date().toISOString(),
     };
 
-      console.log("tasksdata",taskData);
-
+    console.log("tasksdata", taskData);
     try {
       const res = await createTask(taskData);
 
-      if (res.success && res.insertedId) {
+      if (res.success) {
         toast.success("Task posted successfully!");
         e.target.reset();
-        router.push(`/dashboard/client/tasks/${id}`);
+
+        // ডিটেইলস পেজে না পাঠিয়ে সরাসরি মাই টাস্কস পেজে পাঠালাম
+        router.push("/dashboard/client/tasks/mytasks");
+      } else {
+        toast.error("Failed to post task.");
       }
     } catch (error) {
-      toast.error("Task already exists or posting failed");
+      toast.error("Something went wrong!");
     }
   };
 
@@ -243,7 +246,8 @@ const TaskPostingPage = () => {
           {/* Buttons */}
           <div className="flex flex-col gap-3 pt-2 md:flex-row">
             <button
-              type="reset"
+              type="button" 
+              onClick={() => router.push("/dashboard/client/tasks/mytasks")}  
               className="btn btn-outline md:w-32 border rounded-lg text-center py-2 transition-all duration-300 hover:bg-gray-100/10 cursor-pointer"
             >
               Cancel

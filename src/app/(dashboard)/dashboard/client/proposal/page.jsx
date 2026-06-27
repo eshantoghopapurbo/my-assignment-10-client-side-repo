@@ -219,8 +219,8 @@ const ManageProposalsPage = () => {
                         key={status}
                         onClick={() => setFilterStatus(status)}
                         className={`px-5 py-2 text-xs font-bold rounded-xl transition duration-300 cursor-pointer border ${filterStatus === status
-                                ? "bg-cyan-500 text-zinc-950 border-cyan-400 shadow-[0_4px_12px_rgba(6,182,212,0.25)]"
-                                : "bg-current/5 text-inherit border-current/10 opacity-70 hover:opacity-100"
+                            ? "bg-cyan-500 text-zinc-950 border-cyan-400 shadow-[0_4px_12px_rgba(6,182,212,0.25)]"
+                            : "bg-current/5 text-inherit border-current/10 opacity-70 hover:opacity-100"
                             }`}
                     >
                         {status} (
@@ -266,10 +266,10 @@ const ManageProposalsPage = () => {
                                     {/* স্ট্যাটাস ব্যাজ */}
                                     <span
                                         className={`self-start md:self-center px-4 py-1 rounded-xl text-xs font-bold border flex items-center gap-1.5 backdrop-blur-md ${isAccepted
-                                                ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
-                                                : isRejected
-                                                    ? "bg-rose-500/10 text-rose-500 border-rose-500/20"
-                                                    : "bg-amber-500/10 text-amber-500 border-amber-500/20"
+                                            ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20"
+                                            : isRejected
+                                                ? "bg-rose-500/10 text-rose-500 border-rose-500/20"
+                                                : "bg-amber-500/10 text-amber-500 border-amber-500/20"
                                             }`}
                                     >
                                         {isAccepted && <CheckCircle size={13} />}

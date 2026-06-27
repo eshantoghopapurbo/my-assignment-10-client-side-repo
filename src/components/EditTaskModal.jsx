@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, Edit3 } from "lucide-react";
 import { updateTask } from "@/lib/actions/actions";
 
 const EditTaskModal = ({ task, onClose, onSuccess }) => {
@@ -15,7 +15,7 @@ const EditTaskModal = ({ task, onClose, onSuccess }) => {
         deadline: task?.deadline ? task.deadline.split("T")[0] : "",
         category: task?.category || "",
     });
-
+    
     const handleChange = (e) => {
         setFormData((prev) => ({
             ...prev,
@@ -28,7 +28,6 @@ const EditTaskModal = ({ task, onClose, onSuccess }) => {
 
         try {
             setLoading(true);
-
             console.log("Task ID:", task._id);
             console.log("Form Data:", formData);
 
@@ -55,13 +54,12 @@ const EditTaskModal = ({ task, onClose, onSuccess }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="w-full max-w-2xl rounded-2xl border border-gray-700 bg-[#0f172a] p-6 shadow-2xl">
+        <div className="fixed inset-0 z-50 backdrop-blur-sm flex items-center justify-center p-4">
+            <div className="w-full max-w-2xl rounded-2xl border border-gray-700 bg-white p-6 shadow-2xl">
                 <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold">Edit Task</h2>
-
-                    <button onClick={onClose}>
-                        <X className="w-5 h-5" />
+                    <button className="flex-1 flex items-center justify-center gap-2 border border-gray-300 hover:bg-gray-50 py-3.5 rounded-2xl font-medium transition">
+                        <Edit3 size={18} />
+                        Edit
                     </button>
                 </div>
 

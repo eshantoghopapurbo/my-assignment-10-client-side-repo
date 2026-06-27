@@ -2,9 +2,8 @@
 import { useEffect, useState } from "react";
 import { getMyTasks } from "@/lib/actions/tasks";
 import { authClient } from "@/lib/auth-client";
-import { Briefcase, Clock, Edit3, Filter, Search, Trash2 } from "lucide-react";
+import { Briefcase, Clock, Filter, Search, } from "lucide-react";
 import Link from "next/link";
-import { div } from "framer-motion/client";
 import { Button } from "@heroui/react";
 
 const MyTasksPage = () => {
