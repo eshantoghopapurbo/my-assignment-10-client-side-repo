@@ -37,7 +37,7 @@ const DashboardSideBar = () => {
 
     const freelancerMenu = [
         { name: "Dashboard", href: "/dashboard/freelancer", icon: LayoutDashboard },
-        { name: "Browse Tasks", href: "/dashboard/freelancer/tasks", icon: Search },
+        { name: "Browse Tasks", href: "/dashboard/freelancer/browse-tasks", icon: Search },
         { name: "My Proposals", href: "/dashboard/freelancer/proposals", icon: FileText },
         { name: "Active Projects", href: "/dashboard/freelancer/projects", icon: BriefcaseBusiness },
         { name: "My Earnings", href: "/dashboard/freelancer/earnings", icon: DollarSign },

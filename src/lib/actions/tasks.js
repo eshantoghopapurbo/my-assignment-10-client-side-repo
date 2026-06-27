@@ -47,13 +47,12 @@ export const getTaskDetails = async (id) => {
 };
 
 
-// export const getProposalDetails = async (proposalId) => {
-//   const res = await fetch(`${baseUrl}/api/proposals/details/${proposalId}`, { cache: 'no-store' });
-//   return res.json();
-// };
+export const getProposalDetails = async (proposalId) => {
+  const res = await fetch(`${baseUrl}/api/proposals/details/${proposalId}`, { cache: 'no-store' });
+  return res.json();
+};
 
 // get my task
-
 export const getMyTasks = async (email) => {
   const res = await fetch(`${baseUrl}/mytask?email=${email}`);
   if (!res.ok) throw new Error("Failed to fetch");

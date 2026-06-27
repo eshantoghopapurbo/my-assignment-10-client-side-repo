@@ -18,15 +18,17 @@ import { Eye, EyeSlash, Person, Envelope, ShieldCheck, Link as LinkIcon } from "
 import { authClient, signUp } from "@/lib/auth-client";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter } from "next/navigation";
 
 export default function Login() {
+    const router = useRouter();
     const handleGoogleSignIn = async () => {
         await authClient.signIn.social({
             provider: "google",
         });
     }
 
-    const [role ,setRole] =useState("client")
+    const [role, setRole] = useState("client")
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -57,7 +59,7 @@ export default function Login() {
         setError("");
         setSuccess("");
 
-        if (!formData.name || !formData.email || !formData.password || !formData.image ) {
+        if (!formData.name || !formData.email || !formData.password || !formData.image) {
             setError("Please fill in all fields.");
             setIsLoading(false);
             return;
@@ -70,23 +72,22 @@ export default function Login() {
                 password: formData.password,
                 image: formData.image,
                 role,
-                callbackURL: "/",
             });
-            console.log("user ", data);
-
             if (authError) {
                 setError(authError.message || "Signup failed.");
                 return;
             }
-
             setSuccess("Account created successfully!");
-            setFormData({ name: "", email: "", image: "", password: "", });
+            setFormData({ name: "", email: "", image: "", password: "" });
+            if (role === "client") {
+                router.push("/dashboard/client");
+            } else if (role === "freelancer") {
+                router.push("/dashboard/freelancer");
+            }
 
         } catch (err) {
             console.error("Signup Error:", err);
             setError("Something went wrong. Please try again.");
-        } finally {
-            setIsLoading(false);
         }
     };
 

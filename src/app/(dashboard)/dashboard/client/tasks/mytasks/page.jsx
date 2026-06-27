@@ -15,7 +15,6 @@ const MyTasksPage = () => {
     const filteredTasks = tasks.filter((task) =>
         task.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
     useEffect(() => {
         if (!email) return;
         getMyTasks(email).then((data) => setTasks(data));
@@ -84,8 +83,8 @@ const MyTasksPage = () => {
                         {/* স্ট্যাটাস ও অ্যাকশন বাটন */}
                         <div className="flex items-center justify-between pt-4 border-t border-gray-50 mt-2">
                             <span className={`px-3 py-1 rounded-full text-[11px] font-bold  uppercase tracking-wider ${task.status === 'Open' ? 'bg-cyan-50 text-cyan-700' :
-                                    task.status === 'In Progress' ? 'bg-amber-50 text-amber-700' :
-                                        'bg-emerald-50 text-emerald-700'
+                                task.status === 'In Progress' ? 'bg-amber-50 text-amber-700' :
+                                    'bg-emerald-50 text-emerald-700'
                                 }`}>
                                 {task.status}
                             </span>

@@ -5,8 +5,6 @@ import { FileText, Clock, CircleCheck, CircleDollar, Plus } from "@gravity-ui/ic
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 
-
-
 export default function ClientDashboard() {
   const [tasks, setTasks] = useState([]);
   const [openTask,setOpenTask] = useState([]);

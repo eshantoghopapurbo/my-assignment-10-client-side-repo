@@ -4,10 +4,10 @@ import { FileText, Clock, CircleCheck, CircleDollar, Briefcase } from "@gravity-
 import { Button } from "@heroui/react";
 
 const STATS = [
-    { title: "Total Tasks", value: "0", description: "Tasks posted", icon: FileText },
-    { title: "Open Tasks", value: "0", description: "Waiting for freelancers", icon: Briefcase },
-    { title: "Tasks In Progress", value: "0", description: "Currently working", icon: Clock },
-    { title: "Total Spent (USD)", value: "$0", description: "From completed tasks", icon: CircleDollar },
+    { title: "Total Proposals", value: "0", description: "Proposals submitted", icon: FileText },
+    { title: "Pending ", value: "0", description: "Awaiting response", icon: Briefcase },
+    { title: "Accepted ", value: "0", description: "Awaiting response", icon: Clock },
+    { title: "Total Earnings (USD)", value: "$0", description: "From completed tasks", icon: CircleDollar },
 ];
 
 export default function Freelancer() {
