@@ -16,13 +16,15 @@ import { Eye, EyeSlash, Person, Envelope, ShieldCheck, Link as LinkIcon } from "
 import { authClient, signIn, } from "@/lib/auth-client";
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { useRouter } from "next/navigation";
 
-export default function Register() {
+export default function Login() {
+    const router = useRouter();
     const handleGoogleSignIn = async () => {
-            await authClient.signIn.social({
-                provider: "google",
-            });
-        }
+        await authClient.signIn.social({
+            provider: "google",
+        });
+    }
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -44,33 +46,37 @@ export default function Register() {
         e.preventDefault();
         setIsLoading(true);
         setError("");
-        setSuccess("");
-
-        if (!formData.email || !formData.password) {
-            setError("Please fill in all fields.");
-            setIsLoading(false);
-            return;
-        }
 
         try {
             const { data, error: authError } = await signIn.email({
                 email: formData.email,
                 password: formData.password,
-                callbackURL: "/",
+                // মনে রাখবেন: লগইনের সময় সাধারণত 'role' পাঠানোর প্রয়োজন হয় না, 
+                // কারণ ইউজার অলরেডি ডাটাবেজে আছে। 
             });
-            console.log("user ", data);
 
             if (authError) {
-                setError(authError.message || "Signup failed.");
+                setError(authError.message || "Login failed.");
                 return;
             }
 
-            setSuccess("Account created successfully!");
-            setFormData({ email: "", password: "" });
+            console.log("Login user data:", data);
+
+            // ৩. রোল অনুযায়ী রিডাইরেক্ট (লগইন করা ইউজারের রোল চেক করুন)
+            // 'data.user.role' এ রোল পাওয়ার কথা যদি আপনার অথেন্টিকেশন লাইব্রেরি সেটি দেয়
+            const userRole = data?.user?.role;
+
+            if (userRole === "client") {
+                router.push("/dashboard/client");
+            } else if (userRole === "freelancer") {
+                router.push("/dashboard/freelancer");
+            } else {
+                // রোল না পাওয়া গেলে ডিফল্ট ড্যাশবোর্ডে পাঠান
+                router.push("/dashboard/client");
+            }
 
         } catch (err) {
-            console.error("Signup Error:", err);
-            setError("Something went wrong. Please try again.");
+            setError("Something went wrong.");
         } finally {
             setIsLoading(false);
         }
@@ -88,8 +94,8 @@ export default function Register() {
                 </CardHeader>
 
                 <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    
-                     {/* Google */}
+
+                    {/* Google */}
                     <Button
                         onClick={handleGoogleSignIn}
                         variant="bordered"

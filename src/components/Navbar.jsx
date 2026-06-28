@@ -13,10 +13,13 @@ export default function NavbarPage() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
     const { data: session, isPending } = useSession();
-    console.log("session data in Navbar :", session, "is pending", isPending);
+
     const user = session?.user;
     const router = useRouter();
 
+    const dashboardLink = user
+        ? (user.role === 'freelancer' ? '/dashboard/freelancer' : '/dashboard/client')
+        : '/login';
     // const [isOpen, setIsOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const handleLogout = async () => {
@@ -87,10 +90,9 @@ export default function NavbarPage() {
                         user ?
                             <>
                                 <div className="flex relative">
-
                                     <div className="hidden md:block mt-2">
                                         <Link
-                                            href={user ? "/dashboard/client" : "/login"}
+                                            href={dashboardLink}
                                             className="flex items-center gap-2 px-5 py-2.5 font-medium transition-all active:scale-95 text-sm"
                                         >
                                             <LayoutColumns size={18} />
@@ -110,7 +112,7 @@ export default function NavbarPage() {
                                             width={100}
                                             height={100}
                                             className="h-9 w-9 rounded-full object-cover border-2 border-indigo-500"
-                                            src={user?.image }
+                                            src={user?.image}
                                             alt={user.name}
                                         />
                                         <svg className={`h-4 w-4 text-gray-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -174,7 +176,7 @@ export default function NavbarPage() {
                         {user ? (
                             <li>
                                 <Link
-                                    href="/dashboard"
+                                    href="/dashboard/client"
                                     className={`block py-2 px-3 text-base rounded-lg transition-colors ${pathname === "/dashboard"
                                         ? "flex items-center gap-2 bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-500 font-semibold"
                                         : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-900"

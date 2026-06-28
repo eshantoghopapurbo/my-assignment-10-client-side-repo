@@ -33,12 +33,13 @@ const DashboardSideBar = () => {
         { name: " Post Tasks", href: "/dashboard/client/tasks/post-task", icon: LayoutDashboard },
         { name: " Browse view Tasks", href :`/dashboard/client/tasks/mytasks`, icon: Search },
         { name: "My Proposals", href: "/dashboard/client/proposal", icon: FileText },
+        { name: "My Payments", href: "/dashboard/client/payments", icon: DollarSign },
       ];
 
     const freelancerMenu = [
         { name: "Dashboard", href: "/dashboard/freelancer", icon: LayoutDashboard },
-        { name: "Browse Tasks", href: "/dashboard/freelancer/browse-tasks", icon: Search },
-        { name: "My Proposals", href: "/dashboard/freelancer/proposals", icon: FileText },
+        { name: "Browse Tasks", href: "/tasks", icon: Search },
+        { name: "My Proposals", href: "/dashboard/freelancer/myproposals", icon: FileText },
         { name: "Active Projects", href: "/dashboard/freelancer/projects", icon: BriefcaseBusiness },
         { name: "My Earnings", href: "/dashboard/freelancer/earnings", icon: DollarSign },
         { name: "Edit Profile", href: "/dashboard/freelancer/profile", icon: UserRound },

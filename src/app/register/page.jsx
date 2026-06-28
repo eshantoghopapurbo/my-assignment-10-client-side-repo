@@ -20,7 +20,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function Register() {
     const router = useRouter();
     const handleGoogleSignIn = async () => {
         await authClient.signIn.social({

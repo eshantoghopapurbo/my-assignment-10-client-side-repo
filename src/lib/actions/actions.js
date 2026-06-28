@@ -1,5 +1,4 @@
-
-// import axios from 'axios';
+import axios from "axios";
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const updateTask = async (id, taskData) => {
@@ -115,7 +114,6 @@ export const getProposalDetails = async (proposalId) => {
       }
     );
     const result = await response.json();
-
     // ব্যাকএন্ড যদি success: true দেয়, তবে তার ভেতরের data অবজেক্টটি পাঠাবো
     if (result && result.success) {
       return result.data;
@@ -144,7 +142,7 @@ export const getOpenTasks = async () => {
   }
 };
 
-export const submitProposal = async (data) => {
+export const submitProposal = async (data) =>{
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proposals`, {
             method: "POST",
@@ -155,5 +153,37 @@ export const submitProposal = async (data) => {
     } catch (error) {
         console.error("Error:", error);
         return { success: false };
+    }
+};
+
+export const getMyProposals = async (email) => {
+    try {
+        const response = await axios.get(`${baseUrl}/my-proposals`, {
+            params: { freelancerEmail: email } 
+        });
+        return response.data; 
+    } catch (error) {
+        console.error("API Error:", error);
+        return []; 
+    }
+};
+
+// payment api fetch 
+export const processPayment = async (paymentData) => {
+    try {
+        // পেমেন্ট ডাটা ব্যাকএন্ডে পাঠানো হচ্ছে
+        // paymentData অবজেক্টে থাকবে: { sessionId, userId, userEmail, priceId, taskId, proposalId }
+        const response = await axios.post(`${baseUrl}/payment`, paymentData);
+        
+        return {
+            success: true,
+            data: response.data
+        };
+    } catch (error) {
+        console.error("Payment Processing Error:", error.response?.data || error.message);
+        return {
+            success: false,
+            message: error.response?.data?.msg || "Payment processing failed"
+        };
     }
 };
