@@ -49,7 +49,7 @@ const DashboardSideBar = () => {
       { name: "Dashboard", href: "/dashboard/admin", icon: LayoutDashboard },
       { name: "Manage Users", href: "/dashboard/users", icon: Person},
       { name: "Manage Tasks", href: "/dashboard/Tasks", icon: Search},
-      { name: "Transactions History", href: "/dashboard/transactions", icon:  DollarSign},
+      { name: "Transactions History", href: "/dashboard/transactions", icon: DollarSign},
     ];
 
     const handleLogout = async () => {

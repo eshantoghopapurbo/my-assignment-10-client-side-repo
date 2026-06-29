@@ -71,7 +71,6 @@ export const rejectProposalAction = async (taskId, proposalId) => {
   }
 };
 
-
 // // ফ্রিল্যান্সারের সব প্রপোজাল নিয়ে আসার সার্ভার অ্যাকশন
 export const getFreelancerProposals = async (email) => {
   try {
@@ -173,7 +172,7 @@ export const processPayment = async (paymentData) => {
     try {
         // পেমেন্ট ডাটা ব্যাকএন্ডে পাঠানো হচ্ছে
         // paymentData অবজেক্টে থাকবে: { sessionId, userId, userEmail, priceId, taskId, proposalId }
-        const response = await axios.post(`${baseUrl}/payment`, paymentData);
+        const response = await axios.post(`${baseUrl}/api/payment`, paymentData)
         
         return {
             success: true,

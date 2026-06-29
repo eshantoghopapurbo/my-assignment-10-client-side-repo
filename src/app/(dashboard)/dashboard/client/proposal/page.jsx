@@ -6,16 +6,16 @@ import { useRouter } from 'next/navigation';
 
 const ManageProposals = () => {
     const router = useRouter();
-   const handleAccept = (proposal) => {
-    const query = new URLSearchParams({
-        taskId: proposal.taskId,      // আপনার ডাটাবেস অনুযায়ী taskId
-        proposalId: proposal._id,    // প্রপোজাল আইডি
-        amount: proposal.proposedBudget,
-        freelancerEmail: proposal.freelancerEmail
-    }).toString();
+    const handleAccept = (proposal) => {
+        const query = new URLSearchParams({
+            taskId: proposal.taskId,      // আপনার ডাটাবেস অনুযায়ী taskId
+            proposalId: proposal._id,    // প্রপোজাল আইডি
+            amount: proposal.proposedBudget,
+            freelancerEmail: proposal.freelancerEmail
+        }).toString();
 
-    router.push(`/payment/checkout?${query}`);
-};
+        router.push(`/dashboard/client/payment/checkout?${query}`);
+    };
     const [proposals, setProposals] = useState([]);
     const { data: session } = authClient.useSession();
     console.log("session data in manage proposals", session);
@@ -61,8 +61,21 @@ const ManageProposals = () => {
                         </div>
                         {p.status === 'Pending' && (
                             <div className="flex gap-2">
-                                <button onClick={() => handleStatusChange(p._id, 'Accepted')} className="px-4 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700">✓ Accept</button>
-                                <button onClick={() => handleStatusChange(p._id, 'Rejected')} className="px-4 py-1.5 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200">× Reject</button>
+                                {/* পেমেন্ট পেজে রিডাইরেক্ট করার জন্য এখানে handleAccept কল করা হচ্ছে */}
+                                <button
+                                    onClick={() => handleAccept(p)}
+                                    className="px-4 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700"
+                                >
+                                    ✓ Accept
+                                </button>
+
+                                {/* রিজেক্ট বাটন আগের মতোই থাকবে */}
+                                <button
+                                    onClick={() => handleStatusChange(p._id, 'Rejected')}
+                                    className="px-4 py-1.5 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200"
+                                >
+                                    × Reject
+                                </button>
                             </div>
                         )}
                     </div>

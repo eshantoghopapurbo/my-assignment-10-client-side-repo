@@ -18,7 +18,7 @@ export default function NavbarPage() {
     const router = useRouter();
 
     const dashboardLink = user
-        ? (user.role === 'freelancer' ? '/dashboard/freelancer' : '/dashboard/client')
+        ? (user.role === 'freelancer' ? '/dashboard/freelancer' : user.role === 'client' ? '/dashboard/client' : '/dashboard/admin')
         : '/login';
     // const [isOpen, setIsOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -38,7 +38,7 @@ export default function NavbarPage() {
         { label: "Browse Tasks", href: "/tasks" },
         { label: "Freelancers", href: "/freelancers" },
         { label: "Solutions", href: "/solutions" },
-    ];
+       ];
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-zinc-800
