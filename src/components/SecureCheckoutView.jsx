@@ -96,7 +96,6 @@ const SecureCheckoutView = ({ proposal, onBack }) => {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

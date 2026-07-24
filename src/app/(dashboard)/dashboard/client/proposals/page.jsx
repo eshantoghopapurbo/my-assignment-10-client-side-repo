@@ -8,8 +8,8 @@ const ManageProposals = () => {
     const router = useRouter();
     const handleAccept = (proposal) => {
         const query = new URLSearchParams({
-            taskId: proposal.taskId,      // আপনার ডাটাবেস অনুযায়ী taskId
-            proposalId: proposal._id,    // প্রপোজাল আইডি
+            taskId: proposal.taskId,     
+            proposalId: proposals._id,    
             amount: proposal.proposedBudget,
             freelancerEmail: proposal.freelancerEmail
         }).toString();
@@ -26,7 +26,7 @@ const ManageProposals = () => {
 
     const fetchProposals = async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/proposals");
+            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proposals`);
             const sortedProposals = res.data.data.sort((a, b) =>
                 new Date(b.createdAt) - new Date(a.createdAt)
             );
@@ -37,7 +37,7 @@ const ManageProposals = () => {
     };
     const handleStatusChange = async (id, status) => {
         try {
-            await axios.put(`http://localhost:5000/api/proposals/${id}`, { status });
+            await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proposals/${id}`, { status });
             fetchProposals(); // রিফ্রেশ ডাটা
         } catch (error) {
             alert("Failed to update status");
@@ -61,14 +61,19 @@ const ManageProposals = () => {
                         </div>
                         {p.status === 'Pending' && (
                             <div className="flex gap-2">
-                                {/* পেমেন্ট পেজে রিডাইরেক্ট করার জন্য এখানে handleAccept কল করা হচ্ছে */}
-                                <button
-                                    onClick={() => handleAccept(p)}
-                                    className="px-4 py-1.5 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700"
-                                >
-                                    ✓ Accept
-                                </button>
-
+                                <form action="/api/checkout_sessions" method="POST">
+                                    <input type="hidden" name="proposalID" value={proposals._id} />
+                                    <section>
+                                        <button type="submit" role="link"
+                                            className={`block w-full text-center text-xs font-semibold px-4 py-3 rounded-xl transition duration-200 ${proposals.popular
+                                                ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/20'
+                                                : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700/50'
+                                                }`}
+                                        >
+                                            ✓ Accept
+                                        </button>
+                                    </section>
+                                </form>
                                 {/* রিজেক্ট বাটন আগের মতোই থাকবে */}
                                 <button
                                     onClick={() => handleStatusChange(p._id, 'Rejected')}

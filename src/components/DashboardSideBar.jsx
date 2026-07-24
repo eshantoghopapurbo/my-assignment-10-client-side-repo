@@ -32,7 +32,7 @@ const DashboardSideBar = () => {
         { name: "Dashboard", href: "/dashboard/client", icon: LayoutDashboard },
         { name: " Post Tasks", href: "/dashboard/client/tasks/post-task", icon: LayoutDashboard },
         { name: " Browse view Tasks", href :`/dashboard/client/tasks/mytasks`, icon: Search },
-        { name: "My Proposals", href: "/dashboard/client/proposal", icon: FileText },
+        { name: "My Proposals", href: "/dashboard/client/proposals", icon: FileText },
         { name: "My Payments", href: "/dashboard/client/payments", icon: DollarSign },
       ];
 
@@ -47,11 +47,10 @@ const DashboardSideBar = () => {
  
     const adminMenu =[
       { name: "Dashboard", href: "/dashboard/admin", icon: LayoutDashboard },
-      { name: "Manage Users", href: "/dashboard/users", icon: Person},
+      { name: "Manage Users", href: "/dashboard/admin/users", icon: Person},
       { name: "Manage Tasks", href: "/dashboard/Tasks", icon: Search},
       { name: "Transactions History", href: "/dashboard/transactions", icon: DollarSign},
     ];
-
     const handleLogout = async () => {
         await authClient.signOut();
         toast.success("Logged out successfully!");

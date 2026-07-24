@@ -18,7 +18,7 @@ const MyProposalsTable = () => {
       return;
     }
 
-    axios.get(`http://localhost:5000/api/my-proposals?email=${userEmail}`)
+    axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/my-proposals?email=${userEmail}`)
       .then(res => {
         setProposals(res.data);
         setLoading(false);

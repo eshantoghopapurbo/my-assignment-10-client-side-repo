@@ -38,7 +38,7 @@ export default function NavbarPage() {
         { label: "Browse Tasks", href: "/tasks" },
         { label: "Freelancers", href: "/freelancers" },
         { label: "Solutions", href: "/solutions" },
-       ];
+    ];
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-zinc-800
@@ -63,7 +63,6 @@ export default function NavbarPage() {
                 {/* মাঝখান: ডেক্সটপ স্ক্রিনের জন্য মেনু লিংক (ডায়নামিক অ্যাক্টিভ স্টেট সহ) */}
                 <ul className="hidden items-center gap-6 sm:flex">
                     {menuItems.map((item, index) => {
-                        // এখানে চেক করা হচ্ছে কারেন্ট URL-এর সাথে লিংকের href মিলছে কিনা
                         const isActive = pathname === item.href;
 
                         return (
