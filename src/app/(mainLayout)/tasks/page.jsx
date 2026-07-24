@@ -82,11 +82,11 @@ const BrowseTasksPage = () => {
                         className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 text-sm text-gray-700 bg-white"
                     >
                         <option value="All">All Categories</option>
-                        <option value="Design">Design</option>
-                        <option value="Writing">Writing</option>
-                        <option value="Development">Development</option>
-                        <option value="Marketing">Marketing</option>
-                        <option value="Other">Other</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Graphic Design">Graphic Design</option>
+                        <option value="Content Writing">Content Writing</option>
+                        <option value="Digital Marketing">Digital Marketing</option>
                     </select>
                 </div>
 

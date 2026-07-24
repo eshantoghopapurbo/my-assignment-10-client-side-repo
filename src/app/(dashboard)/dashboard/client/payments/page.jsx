@@ -1,30 +1,65 @@
-// 'use client';
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
+"use client";
 
-// const PaymentCards = () => {
-//   const [data, setData] = useState([]);
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-//   useEffect(() => {
-//     // API থেকে ডেটা আনা হচ্ছে
-//     axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/payment`)
-//       .then(response => setData(response.data))
-//       .catch(error => console.error('Error fetching data:', error));
-//   }, []);
+export default function PaymentsPage() {
+    const [payments, setPayments] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-//   return (
-//     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', padding: '20px' }}>
-//       {data.map((item) => (
-//         <div key={item._id} style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px', boxShadow: '2px 2px 10px #eee' }}>
-//           <h3>Payment Details</h3>
-//           <p><strong>Price:</strong> {item.price} BDT</p>
-//           <p><strong>Session ID:</strong> {item.sessionId}</p>
-//           <p><strong>User Email:</strong> {item.userEmail}</p>
-//           <p><strong>Created At:</strong> {new Date(item.createdAt).toLocaleDateString()}</p>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5000";
 
-// export default PaymentCards;
+    useEffect(() => {
+        axios
+            .get(`${baseUrl}/api/payment`)
+            .then((res) => {
+                if (Array.isArray(res.data)) {
+                    setPayments(res.data);
+                } else if (res.data.success && Array.isArray(res.data.data)) {
+                    setPayments(res.data.data);
+                }
+            })
+            .catch((err) => console.error("Payment fetch error:", err))
+            .finally(() => setLoading(false));
+    }, [baseUrl]);
+
+    return (
+        <div className="p-6 max-w-6xl mx-auto">
+            <h1 className="text-2xl font-extrabold text-slate-800 mb-6">Payment History</h1>
+            {loading ? (
+                <div className="text-slate-500">Loading payment history...</div>
+            ) : payments.length === 0 ? (
+                <div className="bg-white rounded-2xl p-8 text-center text-slate-500 border border-slate-100">
+                    No payment history found.
+                </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {payments.map((item) => (
+                        <div
+                            key={item._id}
+                            className="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm space-y-3"
+                        >
+                            <div className="flex justify-between items-center">
+                                <span className="text-xs font-bold uppercase tracking-wider text-sky-600 bg-sky-50 px-2.5 py-1 rounded-lg">
+                                    Payment
+                                </span>
+                                <span className="text-lg font-black text-slate-800">
+                                    ${item.price || item.amount || 0}
+                                </span>
+                            </div>
+                            <p className="text-xs text-slate-500 truncate">
+                                <strong>Session:</strong> {item.sessionId || "N/A"}
+                            </p>
+                            <p className="text-xs text-slate-500 truncate">
+                                <strong>User:</strong> {item.userEmail || item.clientEmail || "N/A"}
+                            </p>
+                            <p className="text-xs text-slate-400">
+                                {item.createdAt ? new Date(item.createdAt).toLocaleDateString() : ""}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    );
+}

@@ -12,9 +12,16 @@ const MyTasksPage = () => {
     const email = session?.user?.email || null;
     const [tasks, setTasks] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const filteredTasks = tasks.filter((task) =>
-        task.title.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const [categoryFilter, setCategoryFilter] = useState("All");
+    const [statusFilter, setStatusFilter] = useState("All");
+
+    const filteredTasks = tasks.filter((task) => {
+        const matchesTitle = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = categoryFilter === "All" || task.category === categoryFilter;
+        const matchesStatus = statusFilter === "All" || (task.status || "").toLowerCase() === statusFilter.toLowerCase();
+        return matchesTitle && matchesCategory && matchesStatus;
+    });
+
     useEffect(() => {
         if (!email) return;
         getMyTasks(email).then((data) => setTasks(data));
@@ -41,20 +48,30 @@ const MyTasksPage = () => {
                 {/* Category Filter */}
                 <div className="relative flex-1">
                     <Filter className="absolute left-3 top-3 text-gray-400" size={18} />
-                    <select className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-600 appearance-none">
-                        <option>All Categories</option>
-                        <option>Development</option>
-                        <option>Design</option>
-                        <option>Writing</option>
+                    <select
+                        value={categoryFilter}
+                        onChange={(e) => setCategoryFilter(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-600 appearance-none bg-white"
+                    >
+                        <option value="All">All Categories</option>
+                        <option value="Web Development">Web Development</option>
+                        <option value="UI/UX Design">UI/UX Design</option>
+                        <option value="Graphic Design">Graphic Design</option>
+                        <option value="Content Writing">Content Writing</option>
+                        <option value="Digital Marketing">Digital Marketing</option>
                     </select>
                 </div>
 
                 {/* Status Filter */}
-                <select className="px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-600 flex-1">
-                    <option>All Status</option>
-                    <option>Open</option>
-                    <option>In Progress</option>
-                    <option>Completed</option>
+                <select
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                    className="px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-cyan-500 text-gray-600 flex-1 bg-white"
+                >
+                    <option value="All">All Status</option>
+                    <option value="open">Open</option>
+                    <option value="in progress">In Progress</option>
+                    <option value="completed">Completed</option>
                 </select>
             </div>
 

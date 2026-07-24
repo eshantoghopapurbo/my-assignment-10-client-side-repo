@@ -30,26 +30,38 @@ const ManageProposals = () => {
 
     const handleAccept = async (proposal) => {
         try {
-            toast.loading("Initiating Stripe Checkout...");
-            const res = await axios.post(`${baseUrl}/api/stripe/create-checkout-session`, {
-                proposalId: proposal._id,
-                taskId: proposal.task_id || proposal.taskId,
-                proposedBudget: proposal.proposed_budget || proposal.proposedBudget,
-                taskTitle: proposal.task_title || proposal.taskTitle || "SkillSwap Micro-Task",
-                clientEmail: session?.user?.email,
-                freelancerEmail: proposal.freelancer_email || proposal.freelancerEmail
-            });
+            toast.loading("Opening Stripe Checkout...");
+            const res = await axios.post(
+                `${baseUrl}/api/stripe/create-checkout-session`,
+                {
+                    proposalId: proposal._id,
+                    taskId: proposal.task_id || proposal.taskId,
+                    proposedBudget: proposal.proposed_budget || proposal.proposedBudget,
+                    taskTitle: proposal.task_title || proposal.taskTitle || "SkillSwap Micro-Task",
+                    clientEmail: session?.user?.email,
+                    freelancerEmail: proposal.freelancer_email || proposal.freelancerEmail
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        // Send current page origin so backend builds correct Stripe redirect URLs
+                        "Origin": window.location.origin
+                    }
+                }
+            );
+
+            toast.dismiss();
 
             if (res.data.url) {
+                // Redirect to Stripe's hosted checkout page
                 window.location.href = res.data.url;
             } else {
-                toast.dismiss();
                 toast.error("Failed to create Stripe Checkout session.");
             }
         } catch (err) {
-            console.error(err);
+            console.error("Stripe error:", err.response?.data || err.message);
             toast.dismiss();
-            toast.error("Payment initiation failed.");
+            toast.error(err.response?.data?.message || "Payment initiation failed.");
         }
     };
 

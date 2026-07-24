@@ -1,70 +1,113 @@
 "use client";
 
-import { Card, CardBody } from "@heroui/react";
+import { motion } from "framer-motion";
 
 const steps = [
-  {
-    number: "1",
-    icon: <span className="text-4xl">📝</span>,
-    title: "Post a Task",
-    description: "Define your project requirements, timeline, and budget. It only takes a few minutes to get started.",
-  },
-  {
-    number: "2",
-    icon: <span className="text-4xl">👥</span>,
-    title: "Hire the Best",
-    description: "Review portfolios, check ratings, and interview freelancers. Choose the perfect match for your specific task.",
-  },
-  {
-    number: "3",
-    icon: <span className="text-4xl">✅</span>,
-    title: "Task Done",
-    description: "Release payment only when you are 100% satisfied. Seamless transactions through our secure marketplace.",
-  },
+    {
+        number: "01",
+        emoji: "📝",
+        title: "Post a Task",
+        description: "Define your project requirements, timeline, and budget. It only takes a few minutes to get started.",
+        color: "sky",
+        bg: "from-sky-50 to-blue-50",
+        iconBg: "from-sky-400 to-blue-500",
+        glow: "shadow-sky-200",
+    },
+    {
+        number: "02",
+        emoji: "👥",
+        title: "Hire the Best",
+        description: "Review portfolios, check ratings, and interview freelancers. Choose the perfect match for your specific task.",
+        color: "violet",
+        bg: "from-violet-50 to-indigo-50",
+        iconBg: "from-violet-400 to-indigo-500",
+        glow: "shadow-violet-200",
+    },
+    {
+        number: "03",
+        emoji: "🚀",
+        title: "Task Done",
+        description: "Release payment only when you are 100% satisfied. Seamless transactions through our secure marketplace.",
+        color: "emerald",
+        bg: "from-emerald-50 to-teal-50",
+        iconBg: "from-emerald-400 to-teal-500",
+        glow: "shadow-emerald-200",
+    },
 ];
 
+const container = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.15 } },
+};
+const item = {
+    hidden: { opacity: 0, y: 32 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
+};
+
 export default function HowItWorks() {
-  return (
-    // হিরো সেকশনের মতো এখানেও w-full এবং bg-white ব্যবহার করা হয়েছে
-    <section className="w-full bg-white py-20 px-6 lg:px-20">
-      {/* max-w-7xl এবং mx-auto ব্যবহারের ফলে এটি হিরো সেকশনের এলাইনমেন্টের সাথে মিলে যাবে */}
-      <div className="max-w-7xl mx-auto">
-        
-        {/* হেডার অংশ */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-slate-900">How it Works</h2>
-          <p className="text-slate-500 mt-2">Simple steps to get your value exchanged</p>
-        </div>
+    return (
+        <section className="w-full bg-white py-24 px-6 lg:px-20 relative overflow-hidden">
+            {/* subtle background decoration */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[1px] bg-gradient-to-r from-transparent via-sky-200 to-transparent" />
 
-        {/* মেইন কন্টেইনার */}
-        <div className="relative">
-          {/* কানেক্টিং লাইন - হিরো সেকশনের মার্জিন অনুযায়ী সেট করা */}
-          <div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-0.5 bg-slate-200 z-0"></div>
+            <div className="max-w-7xl mx-auto">
+                {/* Header */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5 }}
+                    className="text-center mb-16"
+                >
+                    <span className="inline-block text-sky-600 text-sm font-bold uppercase tracking-widest mb-3 bg-sky-50 px-4 py-1.5 rounded-full">
+                        Simple Process
+                    </span>
+                    <h2 className="section-title text-4xl md:text-5xl text-slate-900 mt-3">
+                        How it <span className="gradient-text">Works</span>
+                    </h2>
+                    <p className="text-slate-500 mt-4 text-lg max-w-xl mx-auto">
+                        Three simple steps to get your task done with quality and speed
+                    </p>
+                </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {steps.map((step, index) => (
-              <div key={index} className="flex flex-col items-center relative z-10">
-                {/* আইকন সার্কেল */}
-                <div className="relative mb-6">
-                  <div className="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-xl shadow-blue-200">
-                    {step.icon}
-                  </div>
-                  {/* গ্রিন নাম্বার ব্যাজ */}
-                  <div className="absolute -top-1 -right-1 w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold border-4 border-white">
-                    {step.number}
-                  </div>
-                </div>
+                {/* Steps Grid */}
+                <motion.div
+                    variants={container}
+                    initial="hidden"
+                    whileInView="show"
+                    viewport={{ once: true }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-8 relative"
+                >
+                    {/* Connector line */}
+                    <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-px bg-gradient-to-r from-sky-200 via-violet-200 to-emerald-200 z-0" />
 
-                {/* টেক্সট অংশ */}
-                <h3 className="text-xl font-bold text-slate-900 mb-3">{step.title}</h3>
-                <p className="text-slate-500 text-center leading-relaxed px-4 max-w-sm">
-                  {step.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+                    {steps.map((step, index) => (
+                        <motion.div
+                            key={index}
+                            variants={item}
+                            className={`relative z-10 bg-gradient-to-br ${step.bg} border border-white rounded-3xl p-8 flex flex-col items-center text-center shadow-sm hover:shadow-xl hover:shadow-${step.color}-100 transition-all duration-300 group card-hover cursor-default`}
+                        >
+                            {/* Step number badge */}
+                            <div className="absolute top-4 right-4 text-xs font-black text-slate-300 tracking-widest">
+                                {step.number}
+                            </div>
+
+                            {/* Icon */}
+                            <div className={`relative mb-6 w-20 h-20 rounded-2xl bg-gradient-to-br ${step.iconBg} shadow-xl ${step.glow} flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                                <span className="text-3xl">{step.emoji}</span>
+                            </div>
+
+                            {/* Text */}
+                            <h3 className="text-xl font-bold text-slate-800 mb-3 group-hover:text-sky-600 transition-colors duration-200">
+                                {step.title}
+                            </h3>
+                            <p className="text-slate-500 leading-relaxed text-sm">
+                                {step.description}
+                            </p>
+                        </motion.div>
+                    ))}
+                </motion.div>
+            </div>
+        </section>
+    );
 }

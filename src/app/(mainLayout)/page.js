@@ -1,14 +1,20 @@
 import CTASection from "@/components/CTASection";
+import FreelancersSection from "@/components/FreelancersSection";
 import HeroSection from "@/components/HeroSection";
 import WorksSection from "@/components/WorksSection";
-import Image from "next/image";
+
+export const metadata = {
+  title: "SkillSwap — Freelance Micro-Task Platform",
+  description: "Post tasks, hire skilled freelancers, and get work done fast on SkillSwap.",
+};
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-       <HeroSection></HeroSection>
-        <WorksSection></WorksSection>
-        <CTASection></CTASection>
+    <div className="flex flex-col w-full">
+      <HeroSection />
+      <WorksSection />
+      <FreelancersSection />
+      <CTASection />
     </div>
   );
 }
