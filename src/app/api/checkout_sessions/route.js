@@ -11,7 +11,6 @@ export async function POST() {
     const origin = headersList.get('origin')
     // Create Checkout Sessions from body params.
     const session = await stripe.checkout.sessions.create({
-      customer_email: user?.email,
       line_items: [
         {
           // Provide the exact Price ID (for example, price_1234) of the product you want to sell
@@ -22,11 +21,10 @@ export async function POST() {
       mode: 'subscription',
       success_url: `${origin}/dashboard/client/proposals/success?session_id={CHECKOUT_SESSION_ID}`,
     });
-    console.log(session,"session");
-
+    
     return NextResponse.redirect(session.url, 303)
   } catch (err) {
-    console.log(err,"err");
+    // console.log(err,"err");
     return NextResponse.json(
       { error: err.message },
       { status: err.statusCode || 500 }

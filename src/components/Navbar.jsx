@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // ১. usePathname ইমপোর্ট করলেন
+import { usePathname } from "next/navigation"; 
 import { Bars, LayoutColumns, Xmark } from "@gravity-ui/icons";
 import { authClient, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
@@ -31,8 +31,6 @@ export default function NavbarPage() {
             },
         });
     };
-
-    // এখন আর আলাদা করে isActive দেওয়ার দরকার নেই
     const menuItems = [
         { label: "Home", href: "/" },
         { label: "Browse Tasks", href: "/tasks" },
@@ -44,8 +42,6 @@ export default function NavbarPage() {
         <nav className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-zinc-800
          bg-white/80  backdrop-blur-lg transition-colors duration-300">
             <header className="container mx-auto flex h-16 items-center justify-between px-6">
-
-                {/* বামপাশ: মোবাইল মেনু বাটন এবং লোগো */}
                 <div className="flex items-center gap-4">
                     <button
                         className="sm:hidden text-gray-600 dark:text-gray-300 p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-md transition-colors"
@@ -59,8 +55,6 @@ export default function NavbarPage() {
                         SkillSwap
                     </Link>
                 </div>
-
-                {/* মাঝখান: ডেক্সটপ স্ক্রিনের জন্য মেনু লিংক (ডায়নামিক অ্যাক্টিভ স্টেট সহ) */}
                 <ul className="hidden items-center gap-6 sm:flex">
                     {menuItems.map((item, index) => {
                         const isActive = pathname === item.href;

@@ -2,96 +2,126 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { authClient } from '@/lib/auth-client';
-import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const ManageProposals = () => {
-    const router = useRouter();
-    const handleAccept = (proposal) => {
-        const query = new URLSearchParams({
-            taskId: proposal.taskId,     
-            proposalId: proposals._id,    
-            amount: proposal.proposedBudget,
-            freelancerEmail: proposal.freelancerEmail
-        }).toString();
-
-        router.push(`/dashboard/client/payment/checkout?${query}`);
-    };
     const [proposals, setProposals] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { data: session } = authClient.useSession();
-    console.log("session data in manage proposals", session);
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5000";
+
+    const fetchProposals = async () => {
+        if (!session?.user?.email) return;
+        try {
+            const res = await axios.get(`${baseUrl}/api/client/proposals?clientEmail=${session.user.email}`);
+            if (res.data.data) {
+                setProposals(res.data.data);
+            }
+        } catch (error) {
+            console.error("Error fetching proposals:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         fetchProposals();
-    }, []);
+    }, [session?.user?.email]);
 
-    const fetchProposals = async () => {
+    const handleAccept = async (proposal) => {
         try {
-            const res = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proposals`);
-            const sortedProposals = res.data.data.sort((a, b) =>
-                new Date(b.createdAt) - new Date(a.createdAt)
-            );
-            setProposals(sortedProposals);
-        } catch (error) {
-            console.error("Error fetching proposals:", error);
+            toast.loading("Initiating Stripe Checkout...");
+            const res = await axios.post(`${baseUrl}/api/stripe/create-checkout-session`, {
+                proposalId: proposal._id,
+                taskId: proposal.task_id || proposal.taskId,
+                proposedBudget: proposal.proposed_budget || proposal.proposedBudget,
+                taskTitle: proposal.task_title || proposal.taskTitle || "SkillSwap Micro-Task",
+                clientEmail: session?.user?.email,
+                freelancerEmail: proposal.freelancer_email || proposal.freelancerEmail
+            });
+
+            if (res.data.url) {
+                window.location.href = res.data.url;
+            } else {
+                toast.dismiss();
+                toast.error("Failed to create Stripe Checkout session.");
+            }
+        } catch (err) {
+            console.error(err);
+            toast.dismiss();
+            toast.error("Payment initiation failed.");
         }
     };
-    const handleStatusChange = async (id, status) => {
+
+    const handleReject = async (proposalId) => {
         try {
-            await axios.put(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proposals/${id}`, { status });
-            fetchProposals(); // রিফ্রেশ ডাটা
-        } catch (error) {
-            alert("Failed to update status");
+            const res = await axios.put(`${baseUrl}/api/proposals/${proposalId}/reject`);
+            if (res.data.success) {
+                toast.success("Proposal rejected.");
+                fetchProposals();
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to reject proposal.");
         }
     };
+
+    if (loading) return <div className="p-10 text-center text-gray-500">Loading proposals...</div>;
+
     return (
-        <div className="max-w-6xl mx-auto p-8">
-            <h1 className="text-3xl font-bold mb-2">Manage Proposals</h1>
-            <p className="text-gray-500 mb-8">Review and respond to freelancer proposals</p>
-            {proposals.map((p) => (
-                <div key={p._id} className="p-6 border border-gray-100 rounded-xl shadow-sm mb-6 bg-white hover:shadow-md transition">
-                    <div className="flex justify-between items-start mb-4">
-                        <div>
-                            <h2 className="text-lg font-bold">{p.taskTitle || "Task Title"}</h2>
-                            <span
-                                onClick={() => handleAccept(p)}
-                                className={`px-2 py-0.5 rounded text-xs font-medium ${p.status === 'Pending' ? 'bg-yellow-100 text-yellow-700' : p.status === 'Accepted' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                                {p.status}
-                            </span>
-                            <p className="text-sm text-gray-600 mt-1">from {p.freelancerEmail}</p>
-                        </div>
-                        {p.status === 'Pending' && (
-                            <div className="flex gap-2">
-                                <form action="/api/checkout_sessions" method="POST">
-                                    <input type="hidden" name="proposalID" value={proposals._id} />
-                                    <section>
-                                        <button type="submit" role="link"
-                                            className={`block w-full text-center text-xs font-semibold px-4 py-3 rounded-xl transition duration-200 ${proposals.popular
-                                                ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-900/20'
-                                                : 'bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700/50'
-                                                }`}
-                                        >
-                                            ✓ Accept
-                                        </button>
-                                    </section>
-                                </form>
-                                {/* রিজেক্ট বাটন আগের মতোই থাকবে */}
-                                <button
-                                    onClick={() => handleStatusChange(p._id, 'Rejected')}
-                                    className="px-4 py-1.5 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200"
-                                >
-                                    × Reject
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                    <p className="text-gray-600 text-sm mb-4">{p.coverNote}</p>
-                    <div className="flex gap-4 text-sm text-gray-500">
-                        <span>$ Bid: <span className="font-semibold text-orange-500">${p.proposedBudget}</span></span>
-                        <span>🕒 {p.estimatedDays} days</span>
-                        <span>📅 {new Date(p.createdAt).toLocaleDateString()}</span>
-                    </div>
+        <div className="max-w-6xl mx-auto p-4 md:p-8">
+            <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 mb-2">Manage Proposals</h1>
+            <p className="text-gray-500 text-sm mb-8">Review proposals submitted by freelancers for your posted tasks</p>
+
+            {proposals.length === 0 ? (
+                <div className="bg-white border border-gray-100 rounded-2xl p-12 text-center text-gray-500">
+                    No proposals received yet.
                 </div>
-            ))}
+            ) : (
+                proposals.map((p) => (
+                    <div key={p._id} className="p-6 border border-gray-100 rounded-2xl shadow-sm mb-6 bg-white hover:shadow-md transition">
+                        <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2">
+                            <div>
+                                <h2 className="text-lg font-bold text-gray-900">{p.task_title || p.taskTitle || "Micro Task"}</h2>
+                                <p className="text-xs text-gray-500 mt-1">From: <strong className="text-gray-700">{p.freelancer_email || p.freelancerEmail}</strong></p>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <span className={`px-3 py-1 rounded-md text-xs font-bold ${
+                                    p.status === 'Accepted' ? 'bg-emerald-50 text-emerald-700' :
+                                    p.status === 'Rejected' ? 'bg-rose-50 text-rose-700' : 'bg-amber-50 text-amber-700'
+                                }`}>
+                                    {p.status || "Pending"}
+                                </span>
+
+                                {(p.status === 'pending' || p.status === 'Pending' || !p.status) && (
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => handleAccept(p)}
+                                            className="px-4 py-2 bg-cyan-600 text-white font-medium text-xs rounded-xl hover:bg-cyan-700 transition"
+                                        >
+                                            ✓ Accept & Pay via Stripe
+                                        </button>
+                                        <button
+                                            onClick={() => handleReject(p._id)}
+                                            className="px-3 py-2 bg-rose-50 text-rose-600 font-medium text-xs rounded-xl hover:bg-rose-100 transition"
+                                        >
+                                            × Reject
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        <p className="text-gray-600 text-xs mb-4 bg-gray-50 p-3 rounded-xl">{p.cover_note || p.coverNote}</p>
+
+                        <div className="flex gap-6 text-xs text-gray-500">
+                            <span>Proposed Budget: <strong className="text-emerald-600 font-bold">${p.proposed_budget || p.proposedBudget} USD</strong></span>
+                            <span>Estimated Days: <strong>{p.estimated_days || p.estimatedDays} days</strong></span>
+                            <span>Date Sent: <strong>{p.submitted_at ? new Date(p.submitted_at).toLocaleDateString() : 'Recent'}</strong></span>
+                        </div>
+                    </div>
+                ))
+            )}
         </div>
     );
 };

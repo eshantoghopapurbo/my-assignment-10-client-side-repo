@@ -57,9 +57,7 @@ export const rejectProposalAction = async (taskId, proposalId) => {
         body: JSON.stringify({ status: "Rejected" }),
       }
     );
-
     const result = await response.json();
-
     if (response.ok && result.success) {
       return { success: true, message: "Proposal rejected successfully" };
     } else {
@@ -143,7 +141,7 @@ export const getOpenTasks = async () => {
 
 export const submitProposal = async (data) =>{
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/proposals`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/proposals`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)

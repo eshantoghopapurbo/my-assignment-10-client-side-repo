@@ -113,7 +113,6 @@ const TaskPostingPage = () => {
   const { data: session } = authClient.useSession();
   console.log("session", session);
   const router = useRouter();
-
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
