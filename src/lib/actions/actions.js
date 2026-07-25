@@ -128,8 +128,6 @@ export const getOpenTasks = async () => {
       throw new Error("Failed to fetch tasks");
     }
     const data = await response.json();
-
-    // এখান থেকেই ফিল্টার করে দিতে পারেন অথবা কম্পোনেন্টে করতে পারেন
     return data.filter(task => task.status === 'Open');
   } catch (error) {
     console.error("Error in getOpenTasks:", error);
@@ -166,8 +164,6 @@ export const getMyProposals = async (email) => {
 // payment api fetch 
 export const processPayment = async (paymentData) => {
     try {
-        // পেমেন্ট ডাটা ব্যাকএন্ডে পাঠানো হচ্ছে
-        // paymentData অবজেক্টে থাকবে: { sessionId, userId, userEmail, priceId, taskId, proposalId }
         const response = await axios.post(`${baseUrl}/api/payment`, paymentData)
         
         return {
