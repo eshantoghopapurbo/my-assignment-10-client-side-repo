@@ -21,7 +21,7 @@ export async function POST() {
       mode: 'subscription',
       success_url: `${origin}/dashboard/client/proposals/success?session_id={CHECKOUT_SESSION_ID}`,
     });
-    
+
     return NextResponse.redirect(session.url, 303)
   } catch (err) {
     // console.log(err,"err");

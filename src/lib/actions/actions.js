@@ -104,14 +104,12 @@ export const getProposalDetails = async (proposalId) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          // Authorization হেডারে Bearer টোকেন পাস করা হলো
           authorization: `Bearer ${tokenData?.token}`,
         },
         cache: "no-store",
       }
     );
     const result = await response.json();
-    // ব্যাকএন্ড যদি success: true দেয়, তবে তার ভেতরের data অবজেক্টটি পাঠাবো
     if (result && result.success) {
       return result.data;
     }

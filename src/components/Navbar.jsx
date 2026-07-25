@@ -12,6 +12,7 @@ export default function NavbarPage() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
     const { data: session, isPending } = useSession();
+    console.log(session);
     const user = session?.user;
     const router = useRouter();
 
@@ -66,11 +67,10 @@ export default function NavbarPage() {
                             <li key={item.href}>
                                 <Link
                                     href={item.href}
-                                    className={`relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                                        isActive
+                                    className={`relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
                                             ? "bg-sky-50 text-sky-600"
                                             : "text-slate-600 hover:bg-slate-50 hover:text-sky-600"
-                                    }`}
+                                        }`}
                                 >
                                     {item.label}
                                     {isActive && (
@@ -144,11 +144,10 @@ export default function NavbarPage() {
                                 <li key={item.href}>
                                     <Link
                                         href={item.href}
-                                        className={`flex items-center py-2.5 px-3 text-sm rounded-xl transition-all duration-200 font-medium ${
-                                            isActive
+                                        className={`flex items-center py-2.5 px-3 text-sm rounded-xl transition-all duration-200 font-medium ${isActive
                                                 ? "bg-sky-50 text-sky-600"
                                                 : "text-slate-600 hover:bg-slate-50"
-                                        }`}
+                                            }`}
                                         onClick={() => setIsMenuOpen(false)}
                                     >
                                         {item.label}
