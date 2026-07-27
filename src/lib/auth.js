@@ -18,10 +18,6 @@ export const auth = betterAuth({
       role: {
         default: "client", 
       },
-      isBlocked: {
-      type: "boolean",
-      default: false,
-    },
     }
   },
   socialProviders: {
