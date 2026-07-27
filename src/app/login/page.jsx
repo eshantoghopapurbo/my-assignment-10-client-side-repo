@@ -16,7 +16,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default async function Login() {
     const router = useRouter();
 
     const handleGoogleSignIn = async () => {
@@ -26,10 +26,25 @@ export default function Login() {
         });
     };
 
-    const [formData, setFormData] = useState({
-        email: "",
-        password: "",
-    });
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${formData.email}`
+    );
+    const result = await res.json();
+    if (!result.success) {
+        setError("User not found.");
+        setIsLoading(false);
+        return;
+    }
+    if (result.user.isBlocked) {
+        setError("Your account has been blocked by the admin.");
+        setIsLoading(false);
+        return;
+    }
+    const { data, error: authError } = await signIn.email({
+    email: formData.email,
+     password: formData.password,
+   });
+   console.log(data);
     const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
