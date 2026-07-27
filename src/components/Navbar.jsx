@@ -34,7 +34,7 @@ export default function NavbarPage() {
         { label: "Home", href: "/" },
         { label: "Browse Tasks", href: "/tasks" },
         { label: "Freelancers", href: "/freelancers" },
-    ];
+        ];
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b border-sky-100/60 bg-white/80 backdrop-blur-xl transition-all duration-300 shadow-sm shadow-sky-100/20">
@@ -68,8 +68,8 @@ export default function NavbarPage() {
                                 <Link
                                     href={item.href}
                                     className={`relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
-                                            ? "bg-sky-50 text-sky-600"
-                                            : "text-slate-600 hover:bg-slate-50 hover:text-sky-600"
+                                        ? "bg-sky-50 text-sky-600"
+                                        : "text-slate-600 hover:bg-slate-50 hover:text-sky-600"
                                         }`}
                                 >
                                     {item.label}
@@ -145,8 +145,8 @@ export default function NavbarPage() {
                                     <Link
                                         href={item.href}
                                         className={`flex items-center py-2.5 px-3 text-sm rounded-xl transition-all duration-200 font-medium ${isActive
-                                                ? "bg-sky-50 text-sky-600"
-                                                : "text-slate-600 hover:bg-slate-50"
+                                            ? "bg-sky-50 text-sky-600"
+                                            : "text-slate-600 hover:bg-slate-50"
                                             }`}
                                         onClick={() => setIsMenuOpen(false)}
                                     >
