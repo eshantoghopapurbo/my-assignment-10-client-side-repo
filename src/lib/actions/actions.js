@@ -45,7 +45,6 @@ export const deleteTask = async (id) => {
 // প্রপোজাল রেজেক্ট করার সার্ভার অ্যাকশন
 export const rejectProposalAction = async (taskId, proposalId) => {
   try {
-    // তোমার ব্যাকএন্ড API-তে PUT রিকোয়েস্ট পাঠানো হচ্ছে
     const response = await fetch(
       `${baseUrl}/api/proposals/${taskId}/${proposalId}`,
       {
