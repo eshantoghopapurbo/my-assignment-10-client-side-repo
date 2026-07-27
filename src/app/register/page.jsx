@@ -21,37 +21,13 @@ import axios from "axios";
 
 export default function Register() {
     const router = useRouter();
-    // const handleGoogleSignIn = async () => {
-    //     await authClient.signIn.social({
-    //         provider: "google",
-    //         callbackURL: "/",
-    //     });
-    // };
-
     const handleGoogleSignIn = async () => {
-        await authClient.signIn.social({
+       const result = await authClient.signIn.social({
             provider: "google",
             callbackURL: "/",
-            fetchOptions: {
-                onSuccess: async (ctx) => {
-                    try {
-                        const baseUrl =
-                            process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:5000";
-
-                        await axios.post(`${baseUrl}/api/users/sync`, {
-                            name: ctx.data.user.name,
-                            email: ctx.data.user.email,
-                            image: ctx.data.user.image,
-                            role: "client",
-                        });
-
-                        router.push("/dashboard/client");
-                    } catch (err) {
-                        console.error("User sync failed:", err);
-                    }
-                },
-            },
         });
+
+        console.log(result)
     };
 
     const [role, setRole] = useState("client");

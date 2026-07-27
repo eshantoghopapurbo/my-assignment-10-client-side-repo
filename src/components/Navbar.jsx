@@ -17,7 +17,7 @@ export default function NavbarPage() {
     const router = useRouter();
 
     const dashboardLink = user
-        ? (user.role === 'freelancer' ? '/dashboard/freelancer' : user.role === 'client' ? '/dashboard/client' : '/dashboard/admin')
+        ? (user.role === 'freelancer' ? '/dashboard/freelancer' : user.role === 'client' ? '/dashboard/client' : user.role === "admin" ? '/dashboard/admin' : "/dashboard/client")
         : '/login';
 
     const handleLogout = async () => {
