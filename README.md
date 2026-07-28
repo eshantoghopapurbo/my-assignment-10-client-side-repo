@@ -2,7 +2,7 @@
 
 **SkillSwap** is a freelance micro-task marketplace platform connecting clients with skilled freelancers for quick, one-time jobs such as graphic design, content writing, CSS bug fixes, and micro-app development.
 
-Live Website: [https://taskhive-eight-phi.vercel.app](https://taskhive-eight-phi.vercel.app)
+Live Website: [https://skillswap-client-rho.vercel.app]
 
 ---
 
@@ -50,8 +50,8 @@ Live Website: [https://taskhive-eight-phi.vercel.app](https://taskhive-eight-phi
 
 | Role | Email | Password |
 |---|---|---|
-| **Admin** | `admin1@taskhive.com` | `admin1@taskhive.com` |
-| **Freelancer** | `freelanceruser3@gmail.com` | `freelanceruser3@gmail.com` |
+| **Admin** | `admin@gmail.com` | `admin@gmail.com` |
+| **Freelancer** | `apurbo@gmail.com` | `apurbo@gmail.com` |
 
 ---
 
@@ -59,8 +59,8 @@ Live Website: [https://taskhive-eight-phi.vercel.app](https://taskhive-eight-phi
 
 1. **Clone the repositories**:
    ```bash
-   git clone https://github.com/username/skillswap-client.git
-   git clone https://github.com/username/skillswap-server.git
+   git clone https://github.com/eshantoghopapurbo/my-assignment-10-client-side-repo
+   git clone https://github.com/eshantoghopapurbo/my-assignment-10-server-side-repo
    ```
 
 2. **Backend Setup**:
