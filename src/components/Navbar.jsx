@@ -100,7 +100,8 @@ export default function NavbarPage() {
                                     className="h-8 w-8 rounded-full object-cover border-2 border-sky-400 group-hover:border-sky-500 transition-all"
                                     src={user?.image || "https://i.ibb.co.com/JWMz5JxF/da59647bd31dd524c09991cb89949804-1.jpg"}
                                     alt={user.name || "User"}
-                                />
+                                    />
+                                    console.log(user.image,"image url");
                                 <span className="hidden md:block text-xs font-semibold text-slate-700 max-w-[80px] truncate">
                                     {user.name}
                                 </span>

@@ -45,7 +45,6 @@ export default function Login() {
         e.preventDefault();
         setIsLoading(true);
         setError("");
-
         try {
             const { data, error: authError } = await signIn.email({
                 email: formData.email,

@@ -43,12 +43,10 @@ export default function Register() {
     const [success, setSuccess] = useState("");
 
     const toggleVisibility = () => setIsVisible(!isVisible);
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
-
     const validatePassword = (pass) => {
         if (pass.length < 6) return "Password must be at least 6 characters long.";
         if (!/[A-Z]/.test(pass)) return "Password must contain at least one capital letter.";
